@@ -1,0 +1,22 @@
+.header-logo img{
+    height: 80px;
+    width: 80px;
+}
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .4rem .8rem; 
+    box-shadow: rgb(0, 0, 0, 0.15) 1px 1px 10px 0px;
+}
+.group-header .group-navigation {
+    display: flex;
+    column-gap: 40px;
+}
+
+/* .group-navigation .btn-navigation {
+    background-color: rgb(126, 191, 126);
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 8px;
+} */

@@ -1,0 +1,38 @@
+body {
+    padding: 0;
+    margin: 0; 
+    box-sizing: border-box;
+}
+h1 {
+  padding: 3rem 0;
+  margin: 0;
+  color: #902a2a;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.btn-main {
+  padding: 0.5rem;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.main {
+  font-family: "Montserrat", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+.btn-navigation {
+    background-color: rgb(163, 224, 163);
+    padding: 4px;
+    cursor: pointer;
+    border-radius: 8px;
+    text-align: center;
+    transition: all .5s ease;
+}
+.btn-navigation:hover{
+  background-color: rgb(65, 218, 65);;
+}

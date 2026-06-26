@@ -1,0 +1,30 @@
+<div class="wrap-create">
+  <h2>CREATE PRODUCT</h2>
+  <div [formGroup]="product">
+    <div class="form-control">
+      <label for="">Name: </label>
+      <div>
+        <input type="text" id="name" formControlName="name" />
+      </div>
+      <div *ngIf="name?.dirty || name?.touched">
+        <div style="color: brown" *ngIf="name?.hasError('required')">
+          Name is required
+        </div>
+      </div>
+    </div>
+    <div class="form-control">
+      <label for="">Price: </label>
+      <div>
+        <input type="text" id="price" formControlName="price" />
+      </div>
+      <div *ngIf="price?.dirty || price?.touched">
+        <div style="color: brown" *ngIf="price?.hasError('required')">
+          Price is required
+        </div>
+      </div>
+    </div>
+    <div class="form-control">
+      <div class="btn-navigation" (click)="handleAddCart()">Add to cart</div>
+    </div>
+  </div>
+</div>
