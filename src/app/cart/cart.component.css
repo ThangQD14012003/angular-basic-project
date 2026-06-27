@@ -1,4 +1,14 @@
 .wrapper-cart {
-  background-image: rgb(128, 188, 128);
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
+  background: #f5f7fa;
+  padding: 40px;
 }
+
+.wrapper-cart h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  font-size: 38px;
+  font-weight: 700;
+}
+
