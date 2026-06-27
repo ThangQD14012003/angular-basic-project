@@ -12,7 +12,7 @@
           {{ product.price | currencyPipe }}
         </p>
 
-        <div class="add-cart">
+        <div (click)="handleAddToCart(product)" class="add-cart">
           <i class="fa-solid fa-cart-plus"></i>
         </div>
       </div>

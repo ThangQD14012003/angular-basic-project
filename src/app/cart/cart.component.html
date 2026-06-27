@@ -1,7 +1,7 @@
 <div class="wrapper-cart">
   <h1 [ngClass]="{ active: isActive }">Shopping cart</h1>
   <div *ngIf="isActive">
-    <app-product-item [products]="products" (dataEvent)="handleDelete2($event)">
+    <app-product-item [cartItems]="cartItems" (dataEvent)="handleDelete2($event)">
     </app-product-item>
   </div>
 </div>

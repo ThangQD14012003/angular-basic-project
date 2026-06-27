@@ -11,11 +11,11 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'cart',
+    path: 'cart/:customerId',
     component: CartComponent,
   },
   {
-    path: 'detail/:idd',
+    path: 'detail/:idd', //idd ứng với idd ở detail lúc lấy ở trên param
     loadComponent: () =>
       import('./detail/detail.component').then((m) => m.DetailComponent),
   },

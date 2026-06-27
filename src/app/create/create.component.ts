@@ -29,15 +29,14 @@ export class CreateComponent {
     // console.log(this.name?.value);
     // console.log(this.price?.value)
     const blogItem: BlogItem = {
-      id: Math.random(), 
-      title: String(this.name?.value), 
-      body: String(this.price?.value), 
-      author: 'mario'
+      name: String(this.name?.value), 
+      price: String(this.price?.value), 
     }
-    this.blogService.postBlog(blogItem).subscribe(({data}:any)=> 
+    this.blogService.postBlog(blogItem).subscribe(({productId}:any)=> 
     {
-      if(data.id){
-        this.router.navigate(['/']);
+      console.log('productId create ', productId)
+      if(productId){
+        this.router.navigate(['']);
       }
     })
   }

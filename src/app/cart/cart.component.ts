@@ -1,6 +1,6 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ProductItems } from '../shared/types/productItem';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { CartItems, ProductItems } from '../shared/types/productItem';
 import { ProductItemComponent } from '../shared/product-item/productItem.component';
 import { NgClass, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -17,46 +17,51 @@ import { map } from 'rxjs';
 })
 export class CartComponent implements OnInit, DoCheck, OnDestroy {
   getBlogApi: Subscription;
-  products: ProductItems[] = [
+  cartItems: CartItems[] = [
     
   ];
-
+  customerId = ''; 
   handleDelete2 = (id: number) => {
     // id này được emit từ component con lên 
-    const productIndex = this.products.findIndex((item) => item.id == id);
-    if (productIndex != -1) {
-      this.products.splice(productIndex, 1);
+    const cartIndex = this.cartItems.findIndex((item) => item.id == id);
+    if (cartIndex != -1) {
+      this.cartItems.splice(cartIndex, 1);
     }
     this.blogService.deleteBlog(id).subscribe(({data}:any) => {
       if(data == 1){
-        this.products = this.products.filter(item=> item.id != id)
+        this.cartItems = this.cartItems.filter(item=> item.id != id)
       }
     })
   };
 
   isActive = true;
-  constructor(private blogService: BlogService) {
+  constructor(private blogService: BlogService, private route: ActivatedRoute) {
+    this.customerId = String(route.snapshot.paramMap.get('customerId')); 
     this.getBlogApi = new Subscription();
   }
   ngOnInit(): void {
     this.getBlogApi = this.blogService
-      .getBlogs()
-      .pipe(
-        map(({ data }) =>
-          data
-            .map((item: any) => {
-              return {
-                ...item,
-                name: item.title,
-                price: Number(item.body),
-                image: '../assets/images/lego1.jpg',
-              };
-            })
-            // .filter((product) => product.price > 300000),
-        ),
-      )
+      .getCartByCustomer(Number(this.customerId))
+      // .pipe(
+      //   map(( data ) =>
+      //     data
+      //       .map((item: any) => {
+      //         return {
+      //           ...item,
+      //           name: item.title,
+      //           price: Number(item.body),
+      //           image: '../assets/images/lego1.jpg',
+      //         };
+      //       })
+      //       // .filter((product) => product.price > 300000),
+      //   ),
+      // )
       .subscribe((res) => {
-        this.products = res;
+        console.log('res ', res);
+        this.cartItems = res.map(item => ({
+          ...item, 
+          image: '../assets/images/lego1.jpg'
+        }));
       });
   }
   ngDoCheck(): void {

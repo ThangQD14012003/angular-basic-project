@@ -8,7 +8,15 @@ export type ProductItems = {
 
 export type BlogItem = {
     id?: number;
-    title?: string;
-    body?:string; 
-    author?: string
+    name?: string;
+    price?:string; 
+}
+export type CartItems = {
+    id: number;
+    productId: number; 
+    productName: string; 
+    price: number; 
+    image: string; 
+    description: string; 
+    quantity: number
 }

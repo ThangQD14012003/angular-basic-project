@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { currencyPipe } from '../pipes/CurrencyPipe.pipe';
 import { upperCasePipe } from '../pipes/UpperCasePipe.pipe';
 import { NgClass, NgFor } from '@angular/common';
-import { ProductItems } from '../types/productItem';
+import { CartItems, ProductItems } from '../types/productItem';
 import { outputAst } from '@angular/compiler';
 
 @Component({
@@ -25,7 +25,7 @@ import { outputAst } from '@angular/compiler';
   styleUrls: ['./productItem.component.css'],
 })
 export class ProductItemComponent implements OnDestroy {
-  @Input() products: ProductItems[] = [];
+  @Input() cartItems: CartItems[] = [];
   // lấy thuộc tính từ component cha truyền xuống
   @Output() dataEvent = new EventEmitter<number>();
   handleDeletee = (id: number) => {
@@ -33,7 +33,7 @@ export class ProductItemComponent implements OnDestroy {
   };
 
   get totalPrice(): string {
-    const sum = this.products.reduce((total, item) => {
+    const sum = this.cartItems.reduce((total, item) => {
       return total + item.price;
     }, 0);
     return `Total Price ${sum} đ`; 

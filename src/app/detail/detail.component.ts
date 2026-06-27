@@ -28,12 +28,10 @@ export class DetailComponent implements OnInit {
     description: ''
   }
   ngOnInit(): void {
-    this.blogService.detailBlog(Number(this.idd)).subscribe(({data}:any) => {
-      console.log("data: ",data); 
-      this.productItem.id = data.id,
-      this.productItem.image = '../assets/images/lego1.jpg', 
-      this.productItem.name = data.title, 
-      this.productItem.price = data.body
+    this.blogService.detailBlog(Number(this.idd)).subscribe((data:any) => {
+      console.log("data11: ",data); 
+      this.productItem = data
+      this.productItem.image = '../assets/images/lego1.jpg'
       this.productItem.description = 'Đây là bộ LEGO phiên bản đặc biệt với thiết kế hiện đại, nhiều chi tiết đẹp mắt và chất liệu cao cấp. Phù hợp cho cả trẻ em và người sưu tầm LEGO.'
     })
   }

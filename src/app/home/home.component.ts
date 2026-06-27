@@ -1,6 +1,6 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { ProductItems } from '../shared/types/productItem';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { BlogItem, ProductItems } from '../shared/types/productItem';
 import { ProductItemComponent } from '../shared/product-item/productItem.component';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,7 @@ import { map } from 'rxjs';
 import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
 
 @Component({
-  selector: 'app-cart',
+  selector: 'app-home',
   standalone: true,
   imports: [
     RouterOutlet,
@@ -27,32 +27,40 @@ import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
 export class HomeComponent implements OnInit, OnDestroy {
   products: ProductItems[] = [];
   getBlogApi: Subscription;
-  constructor(private blogService: BlogService) {
+  constructor(private blogService: BlogService, private router:Router) {
     this.getBlogApi = new Subscription();
   }
   ngOnInit(): void {
-    this.getBlogApi = this.blogService
-      .getBlogs()
-      .pipe(
-        map(({ data }) =>
-          data.map((item: any) => {
-            return {
-              ...item,
-              name: item.title,
-              price: Number(item.body),
-              image: '../assets/images/lego1.jpg',
-            };
-          }),
-        ),
-      )
-      .subscribe((res) => {
-        this.products = res;
-      });
-  }
+  this.getBlogApi = this.blogService
+    .getBlogs()
+    .subscribe((res: ProductItems[]) => {
+      this.products = res.map(item => ({
+        ...item, 
+        image: '../assets/images/lego1.jpg'
+      }));
+      
+      console.log(this.products);
+    });
+}
   ngOnDestroy(): void {
     if (this.getBlogApi) {
       this.getBlogApi.unsubscribe();
       console.log('getBlogApi is unsubcribe');
     }
+  }
+
+  handleAddToCart(product: ProductItems) {
+    const blogItem: BlogItem = {
+      id: Math.random(),
+      name: String(product.name),
+      price: String(product.price),
+    };
+
+    this.blogService.postBlog(blogItem).subscribe(({data}:any)=> 
+    {
+      if(data.id){
+        this.router.navigate(['/cart']);
+      }
+    })
   }
 }
