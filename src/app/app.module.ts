@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { currencyPipe } from './shared/pipes/CurrencyPipe.pipe';
 import { NgClass, NgFor, UpperCasePipe } from '@angular/common';
 import { upperCasePipe } from './shared/pipes/UpperCasePipe.pipe';
+import { FooterLayoutComponent } from './shared/footer-layout/footer-layout.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { upperCasePipe } from './shared/pipes/UpperCasePipe.pipe';
     BrowserModule,
     AppRoutingModule, 
     HeaderLayoutComponent, 
+    FooterLayoutComponent,
     FormsModule, 
     currencyPipe, 
     upperCasePipe, 

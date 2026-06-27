@@ -1,8 +1,24 @@
-<div class="wrapper-cart">
-  <h1 [ngClass]="{ active: isActive }">Shopping cart</h1>
-  <div *ngIf="isActive">
-    <app-product-item [products]="products" (dataEvent)="handleDelete2($event)">
-    </app-product-item>
+<div class="wrapper-home">
+  <h2>Let's Shopping</h2>
+
+  <div class="product-list">
+    <div class="product-card" *ngFor="let product of products">
+      <img [src]="product.image" [alt]="product.name" />
+
+      <h3>{{ product.name }}</h3>
+
+      <div class="price-cart">
+        <p class="price">
+          {{ product.price | currencyPipe }}
+        </p>
+
+        <div class="add-cart">
+          <i class="fa-solid fa-cart-plus"></i>
+        </div>
+      </div>
+      <a [routerLink]="['detail', product.id]">
+        <button>Xem chi tiết</button>
+      </a>
+    </div>
   </div>
-  <button (click)="RemoveComponent()">delete</button>
 </div>

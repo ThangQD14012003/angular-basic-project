@@ -1,0 +1,4 @@
+.wrapper-cart {
+  background-image: rgb(128, 188, 128);
+  height: calc(100vh - 70px);
+}

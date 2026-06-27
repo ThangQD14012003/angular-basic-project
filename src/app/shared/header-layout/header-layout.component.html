@@ -1,9 +1,27 @@
 <div class="group-header">
-    <div class="header-logo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/3840px-LEGO_logo.svg.png" alt="">
-    </div>
-    <div class="group-navigation">
-        <a routerLink="" class="btn-navigation"><img src="../../../assets/images/shopping-cart.svg" alt="Shopping" stype="width: 40px", height="40px"></a>
-        <a routerLink="/create" class="btn-navigation"><img src="../../../assets/images/store.svg" alt="Store" style="width: 40px; height: 40px;"></a>
-    </div>
+  <div class="header-logo">
+    <a [routerLink]="['']">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/3840px-LEGO_logo.svg.png"
+        alt="LEGO Logo"
+      />
+    </a>
+  </div>
+
+  <div class="menu">
+    <a routerLink="/">TRANG CHỦ</a>
+    <a routerLink="/lego1">LEGO1</a>
+    <a routerLink="/lego2">LEGO2</a>
+    <a routerLink="/lego3">LEGO3</a>
+  </div>
+
+  <div class="group-navigation">
+    <a routerLink="/cart" class="btn-navigation">
+      <img src="assets/images/shopping-cart.svg" alt="Shopping" />
+    </a>
+
+    <a routerLink="/create" class="btn-navigation">
+      <img src="assets/images/store.svg" alt="Store" />
+    </a>
+  </div>
 </div>

@@ -1,4 +1,81 @@
-.wrapper-cart {
-  background-image: rgb(142, 235, 142);
-  height: calc(100vh - 70px);
+.wrapper-home {
+  padding: 2rem;
+}
+
+.wrapper-home h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.product-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+}
+
+.product-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.product-card h3 {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+/* Dòng chứa giá và icon */
+.price-cart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.75rem 0;
+}
+
+.price {
+  color: #e3000b;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.add-cart {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.add-cart:hover {
+  color: #e3000b;
+  transform: scale(1.1);
+}
+
+.product-card button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background: #ffe600;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s ease;
+}
+
+.product-card button:hover {
+  background: #ffd500;
 }

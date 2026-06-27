@@ -1,22 +1,75 @@
-.header-logo img{
-    height: 80px;
-    width: 80px;
-}
-.group-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .4rem .8rem; 
-    box-shadow: rgb(0, 0, 0, 0.15) 1px 1px 10px 0px;
-}
-.group-header .group-navigation {
-    display: flex;
-    column-gap: 40px;
+.header-logo img {
+  width: 80px;
+  height: 80px;
 }
 
-/* .group-navigation .btn-navigation {
-    background-color: rgb(126, 191, 126);
-    padding: 4px;
-    cursor: pointer;
-    border-radius: 8px;
-} */
+.group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 2rem;
+  background-color: white;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+.menu {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.menu a:hover {
+  color: rgb(153, 153, 226);
+}
+
+/* Hiệu ứng gạch chân */
+.menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 0;
+  height: 3px;
+  background-color: rgb(153, 153, 226);
+  transition: width 0.3s;
+}
+
+.menu a:hover::after {
+  width: 100%;
+}
+
+.group-navigation {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-navigation {
+  width: 52px;
+  height: 52px;
+  background-color: #f4f4f4;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-navigation:hover {
+  background-color: rgb(153, 153, 226);
+  transform: translateY(-3px);
+}
+
+.btn-navigation img {
+  width: 28px;
+  height: 28px;
+}

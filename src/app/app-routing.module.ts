@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
+import { CartComponent } from './cart/cart.component';
 import { DetailComponent } from './detail/detail.component';
 import { CreateComponent } from './create/create.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
   {
@@ -10,7 +11,11 @@ const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'detail/:id',
+    path: 'cart',
+    component: CartComponent,
+  },
+  {
+    path: 'detail/:idd',
     loadComponent: () =>
       import('./detail/detail.component').then((m) => m.DetailComponent),
   },

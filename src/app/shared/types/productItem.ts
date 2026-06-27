@@ -2,7 +2,8 @@ export type ProductItems = {
     id: number; 
     name: string; 
     price: number; 
-    image: string
+    image: string; 
+    description: string
 }
 
 export type BlogItem = {
