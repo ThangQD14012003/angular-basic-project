@@ -9,7 +9,7 @@ import { CartItems, ProductItems } from '../types/productItem';
 import { outputAst } from '@angular/compiler';
 
 @Component({
-  selector: 'app-product-item',
+  selector: 'app-cart-item',
   standalone: true,
   imports: [
     RouterOutlet,
@@ -21,10 +21,10 @@ import { outputAst } from '@angular/compiler';
     NgClass,
     RouterLink,
   ],
-  templateUrl: './productItem.component.html',
-  styleUrls: ['./productItem.component.css'],
+  templateUrl: './cartItem.component.html',
+  styleUrls: ['./cartItem.component.css'],
 })
-export class ProductItemComponent implements OnDestroy {
+export class CartItemComponent implements OnDestroy {
   @Input() cartItems: CartItems[] = [];
   // lấy thuộc tính từ component cha truyền xuống
   @Output() dataEvent = new EventEmitter<number>();

@@ -16,6 +16,7 @@ export class CreateComponent {
   product = new FormGroup({
     name : new FormControl('', Validators.required),
     price : new FormControl('', Validators.required),
+    desciption: new FormControl(), 
   });
   constructor(private blogService: BlogService, private router: Router) {}
   get name(){
@@ -24,13 +25,16 @@ export class CreateComponent {
   get price(){
     return this.product.get('price')
   }
-  handleAddCart() {
+  get desciption(){
+    return this.product.get('price')
+  }
+  handleAddProduct() {
     if(this.name?.hasError('required') || this.price?.hasError('required')) return; 
     // console.log(this.name?.value);
     // console.log(this.price?.value)
     const blogItem: BlogItem = {
       name: String(this.name?.value), 
-      price: String(this.price?.value), 
+      price: String(this.price?.value)
     }
     this.blogService.postBlog(blogItem).subscribe(({productId}:any)=> 
     {

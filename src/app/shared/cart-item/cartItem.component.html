@@ -3,7 +3,8 @@
     <div class="col-1">Image</div>
     <div class="col-2">Name</div>
     <div class="col-3">Price</div>
-    <div class="col-4">Action</div>
+    <div class="col-4">Quantity</div>
+    <div class="col-5">Action</div>
   </div>
   <div class="body-cart">
     <div class="row-cart" *ngFor="let cartItem of cartItems">
@@ -15,6 +16,9 @@
       <div class="col-2">{{ cartItem.productName | upperCasePipe }}</div>
       <div class="col-3">{{ cartItem.price | currencyPipe }}</div>
       <div class="col-4">
+        {{ cartItem.quantity }}
+      </div>
+      <div class="col-5">
         <div class="btn-main" (click)="handleDeletee(cartItem.id)">
           <img
             width="20px"
@@ -26,5 +30,5 @@
       </div>
     </div>
   </div>
-  {{totalPrice}}
+  {{ totalPrice }}
 </div>

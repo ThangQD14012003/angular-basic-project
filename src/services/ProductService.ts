@@ -24,18 +24,4 @@ export class BlogService {
   postBlog(blogItem: BlogItem): Observable<ProductItems> {
     return this.http.post<any>('https://localhost:7216/api/Product', blogItem);
   }
-  deleteBlog(id: number): Observable<ResponseData<ProductItems>> {
-    return this.http.delete<any>(`https://localhost:7216/api/Cart/${id}`);
-  }
-  getCartByCustomer(customerId: number): Observable<CartItems[]> {
-    return this.http.get<CartItems[]>(
-      `https://localhost:7216/api/Cart/customer/${customerId}`,
-    );
-  }
-  postCart(customerId: number, productId: number): Observable<any> {
-    return this.http.post<any>(
-      `https://localhost:7216/api/Cart/add?customerId=${customerId}&productId=${productId}`,
-      {},
-    );
-  }
 }

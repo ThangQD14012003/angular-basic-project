@@ -5,7 +5,7 @@
     <div class="product-card" *ngFor="let product of products">
       <img [src]="product.image" [alt]="product.name" />
 
-      <h3>{{ product.name }}</h3>
+      <h3>{{ product.name | upperCasePipe }}</h3>
 
       <div class="price-cart">
         <p class="price">

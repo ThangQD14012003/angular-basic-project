@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { CartItems, ProductItems } from '../shared/types/productItem';
-import { ProductItemComponent } from '../shared/product-item/productItem.component';
+import { CartItemComponent } from '../shared/cart-item/cartItem.component';
 import { NgClass, NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BlogService } from 'src/services/BlogService';
@@ -11,7 +11,7 @@ import { map } from 'rxjs';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [RouterOutlet, ProductItemComponent, NgClass, NgIf],
+  imports: [RouterOutlet, CartItemComponent, NgClass, NgIf],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
 })
@@ -27,9 +27,13 @@ export class CartComponent implements OnInit, DoCheck, OnDestroy {
     if (cartIndex != -1) {
       this.cartItems.splice(cartIndex, 1);
     }
-    this.blogService.deleteBlog(id).subscribe(({data}:any) => {
-      if(data == 1){
+    this.blogService.deleteBlog(id).subscribe((data:any) => {
+      if(data != 1){
+        console.log('datadelete: ',data)
         this.cartItems = this.cartItems.filter(item=> item.id != id)
+      }
+      else {
+        console.log('false'); 
       }
     })
   };
