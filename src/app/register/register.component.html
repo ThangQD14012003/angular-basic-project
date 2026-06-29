@@ -1,0 +1,67 @@
+<div class="wrap-register">
+  <div class="card-form">
+    <h2>ĐĂNG KÝ KHÁCH HÀNG</h2>
+
+    <div *ngIf="errorMessage" class="alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert-success">
+      {{ successMessage }}
+    </div>
+
+    <form [formGroup]="registerForm" class="form" (ngSubmit)="handleRegister()">
+
+      <!-- FULLNAME -->
+      <div class="form-control">
+        <label>Họ và tên</label>
+        <input type="text" formControlName="fullName" placeholder="Nhập họ và tên" />
+        <div *ngIf="fullName?.touched && fullName?.invalid">
+          <small class="error" *ngIf="fullName?.hasError('required')">Họ và tên là bắt buộc</small>
+        </div>
+      </div>
+
+      <!-- EMAIL -->
+      <div class="form-control">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="Nhập địa chỉ email" />
+        <div *ngIf="email?.touched && email?.invalid">
+          <small class="error" *ngIf="email?.hasError('required')">Email là bắt buộc</small>
+          <small class="error" *ngIf="email?.hasError('email')">Email không hợp lệ</small>
+        </div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="form-control">
+        <label>Mật khẩu</label>
+        <input type="password" formControlName="password" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)" />
+        <div *ngIf="password?.touched && password?.invalid">
+          <small class="error" *ngIf="password?.hasError('required')">Mật khẩu là bắt buộc</small>
+          <small class="error" *ngIf="password?.hasError('minlength')">Mật khẩu phải từ 6 ký tự trở lên</small>
+        </div>
+      </div>
+
+      <!-- PHONE -->
+      <div class="form-control">
+        <label>Số điện thoại</label>
+        <input type="text" formControlName="phone" placeholder="Nhập số điện thoại" />
+      </div>
+
+      <!-- ADDRESS -->
+      <div class="form-control">
+        <label>Địa chỉ nhận hàng</label>
+        <input type="text" formControlName="address" placeholder="Nhập địa chỉ của bạn" />
+      </div>
+
+      <!-- BUTTON -->
+      <div class="form-control">
+        <button type="submit" class="btn">Đăng ký</button>
+      </div>
+
+      <div class="form-footer">
+        Đã có tài khoản? <a routerLink="/login">Đăng nhập ngay</a>
+      </div>
+
+    </form>
+  </div>
+</div>

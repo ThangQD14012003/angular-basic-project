@@ -1,0 +1,49 @@
+<div class="orders-container">
+  <h1>Lịch sử mua hàng</h1>
+
+  <div *ngIf="isLoading" class="loading-state">
+    Đang tải danh sách đơn hàng...
+  </div>
+
+  <div *ngIf="!isLoading && orders.length === 0" class="empty-state">
+    <img src="assets/images/store.svg" alt="Empty Orders" width="100" />
+    <p>Bạn chưa đặt đơn hàng nào.</p>
+  </div>
+
+  <div *ngIf="!isLoading && orders.length > 0" class="orders-list">
+    <div class="order-card" *ngFor="let order of orders">
+      <div class="order-header">
+        <div>
+          <span class="order-id">Đơn hàng #{{ order.id }}</span>
+          <span class="order-date">Ngày đặt: {{ order.orderDate | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+        <span class="order-status" [ngClass]="getStatusClass(order.orderStatusName)">
+          {{ order.orderStatusName }}
+        </span>
+      </div>
+
+      <div class="order-body">
+        <div class="address-box">
+          <strong>Địa chỉ nhận hàng:</strong> {{ order.shippingAddress }}
+        </div>
+
+        <div class="order-items">
+          <div class="item-row" *ngFor="let detail of order.orderDetails">
+            <div class="item-info">
+              <span class="item-name">{{ detail.productName }}</span>
+              <span class="item-meta">x{{ detail.quantity }} - {{ detail.unitPrice | currencyPipe }}</span>
+            </div>
+            <div class="item-price">
+              {{ (detail.quantity * detail.unitPrice) | currencyPipe }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <div class="total-label">Tổng cộng:</div>
+        <div class="total-amount">{{ order.totalAmount | currencyPipe }}</div>
+      </div>
+    </div>
+  </div>
+</div>

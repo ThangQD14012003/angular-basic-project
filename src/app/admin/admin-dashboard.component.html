@@ -1,0 +1,133 @@
+<div class="admin-container">
+  <!-- Sider Tabs -->
+  <div class="admin-tabs">
+    <button [class.active]="activeTab === 'products'" (click)="activeTab = 'products'">
+      Quản lý sản phẩm
+    </button>
+    <button [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'">
+      Quản lý đơn hàng
+    </button>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- Tab 1: Products -->
+    <div *ngIf="activeTab === 'products'" class="tab-pane">
+      <div class="product-split">
+        <!-- Form Add/Edit -->
+        <div class="product-form-box">
+          <h3>{{ isEditingProduct ? 'SỬA SẢN PHẨM' : 'THÊM SẢN PHẨM' }}</h3>
+          <form [formGroup]="productForm" (ngSubmit)="handleSaveProduct()">
+            <div class="form-control">
+              <label>Tên sản phẩm</label>
+              <input type="text" formControlName="name" placeholder="Tên LEGO..." />
+            </div>
+
+            <div class="form-control">
+              <label>Giá tiền (VND)</label>
+              <input type="number" formControlName="price" />
+            </div>
+
+            <div class="form-control">
+              <label>Số lượng kho</label>
+              <input type="number" formControlName="stockQuantity" />
+            </div>
+
+            <div class="form-control">
+              <label>Số lượng khả dụng</label>
+              <input type="number" formControlName="availableQuantity" />
+            </div>
+
+            <div class="form-control">
+              <label>Link ảnh sản phẩm</label>
+              <input type="text" formControlName="imageUrl" />
+            </div>
+
+            <div class="form-control">
+              <label>Mô tả ngắn</label>
+              <textarea formControlName="description" rows="3"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-save">
+                {{ isEditingProduct ? 'Cập nhật' : 'Thêm mới' }}
+              </button>
+              <button type="button" class="btn-cancel" *ngIf="isEditingProduct" (click)="handleOpenAddProduct()">
+                Hủy sửa
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Product Table -->
+        <div class="product-table-box">
+          <h3>DANH SÁCH SẢN PHẨM</h3>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá bán</th>
+                <th>Kho</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of products">
+                <td><img [src]="p.image" width="50" height="auto" /></td>
+                <td><strong>{{ p.name }}</strong></td>
+                <td>{{ p.price | currencyPipe }}</td>
+                <td>{{ p.availableQuantity ?? 0 }} / {{ p.stockQuantity ?? 0 }}</td>
+                <td>
+                  <button class="btn-table-edit" (click)="handleEditProduct(p)">Sửa</button>
+                  <button class="btn-table-delete" (click)="handleDeleteProduct(p.id)">Xóa</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: Orders -->
+    <div *ngIf="activeTab === 'orders'" class="tab-pane">
+      <h3>DANH SÁCH ĐƠN ĐẶT HÀNG</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Khách hàng</th>
+            <th>Tổng tiền</th>
+            <th>Ngày đặt</th>
+            <th>Địa chỉ giao hàng</th>
+            <th>Sản phẩm</th>
+            <th>Trạng thái</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of orders">
+            <td>#{{ o.id }}</td>
+            <td>
+              <strong>{{ o.userFullName }}</strong>
+              <div style="font-size:12px;color:#7f8c8d">{{ o.userEmail }}</div>
+            </td>
+            <td style="color:#e74c3c;font-weight:700">{{ o.totalAmount | currencyPipe }}</td>
+            <td>{{ o.orderDate | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ o.shippingAddress }}</td>
+            <td>
+              <div *ngFor="let d of o.orderDetails" class="order-item-list">
+                - {{ d.productName }} (x{{ d.quantity }})
+              </div>
+            </td>
+            <td>
+              <select [ngModel]="o.orderStatusId" (ngModelChange)="handleStatusChange(o, $event)" class="status-select">
+                <option *ngFor="let s of orderStatuses" [ngValue]="s.id">{{ s.name }}</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
