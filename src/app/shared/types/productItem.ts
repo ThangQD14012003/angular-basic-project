@@ -3,7 +3,10 @@ export type ProductItems = {
     name: string; 
     price: number; 
     image: string; 
-    description: string
+    description: string;
+    categoryId?: number;
+    stockQuantity?: number;
+    availableQuantity?: number;
 }
 
 export type BlogItem = {
@@ -18,5 +21,37 @@ export type CartItems = {
     price: number; 
     image: string; 
     description: string; 
-    quantity: number
+    quantity: number;
 }
+
+export interface User {
+    id: number;
+    fullName: string;
+    email: string;
+    role: string;
+    phone?: string;
+    address?: string;
+}
+
+export interface OrderDetailDto {
+    id: number;
+    productId: number;
+    productName: string;
+    productImage: string;
+    quantity: number;
+    unitPrice: number;
+    subTotal: number;
+}
+
+export interface OrderDto {
+    id: number;
+    userId: number;
+    userFullName: string;
+    userEmail: string;
+    orderStatusId: number;
+    orderStatusName: string;
+    orderDate: string;
+    totalAmount: number;
+    shippingAddress: string;
+    orderDetails: OrderDetailDto[];
+}

@@ -1,14 +1,13 @@
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { BlogItem, ProductItems } from '../shared/types/productItem';
+import { ProductItems } from '../shared/types/productItem';
 import { CartItemComponent } from '../shared/cart-item/cartItem.component';
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { BlogService } from 'src/services/BlogService';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs';
 import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
 import { upperCasePipe } from '../shared/pipes/UpperCasePipe.pipe';
+import { CartStateService } from '../shared/services/cart-state.service';
 
 @Component({
   selector: 'app-home',
@@ -21,7 +20,7 @@ import { upperCasePipe } from '../shared/pipes/UpperCasePipe.pipe';
     NgFor,
     currencyPipe,
     RouterLink,
-    upperCasePipe
+    upperCasePipe,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
@@ -29,21 +28,28 @@ import { upperCasePipe } from '../shared/pipes/UpperCasePipe.pipe';
 export class HomeComponent implements OnInit, OnDestroy {
   products: ProductItems[] = [];
   getBlogApi: Subscription;
-  constructor(private blogService: BlogService, private router:Router) {
+
+  constructor(
+    private blogService: BlogService,
+    private router: Router,
+    private cartStateService: CartStateService
+  ) {
     this.getBlogApi = new Subscription();
   }
+
   ngOnInit(): void {
-  this.getBlogApi = this.blogService
-    .getBlogs()
-    .subscribe((res: ProductItems[]) => {
-      this.products = res.map(item => ({
-        ...item, 
-        image: '../assets/images/lego1.jpg'
-      }));
-      
-      console.log(this.products);
-    });
-}
+    this.getBlogApi = this.blogService
+      .getBlogs()
+      .subscribe((res: ProductItems[]) => {
+        this.products = res.map(item => ({
+          ...item,
+          image: '../assets/images/lego1.jpg',
+        }));
+
+        console.log(this.products);
+      });
+  }
+
   ngOnDestroy(): void {
     if (this.getBlogApi) {
       this.getBlogApi.unsubscribe();
@@ -52,16 +58,23 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   handleAddToCart(product: ProductItems) {
-  const customerId = 1; 
-  this.blogService.postCart(customerId, product.id)
-    .subscribe({
-      next: (res) => {
-        console.log('Add to cart success', res);
-        this.router.navigate(['/cart']); // hoặc không cần navigate
-      },
-      error: (err) => {
-        console.error('Add to cart error', err);
-      }
-    });
-}
+    const userStr = localStorage.getItem('user');
+    console.log('User from localStorage:', userStr); // Log the retrieved user string 
+    if (!userStr) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const customerId = JSON.parse(userStr).id;
+    this.blogService.postCart(customerId, product.id)
+      .subscribe({
+        next: (res) => {
+          console.log('Add to cart success', res);
+          this.cartStateService.refreshCartCount(customerId);
+        },
+        error: (err) => {
+          console.error('Add to cart error', err);
+        },
+      });
+  }
 }

@@ -1,7 +1,32 @@
 <div class="wrapper-cart">
   <h1 [ngClass]="{ active: isActive }">Shopping cart</h1>
-  <div *ngIf="isActive">
+  
+  <div *ngIf="errorMessage" class="alert-error">
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="successMessage" class="alert-success">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="isActive && cartItems.length > 0">
     <app-cart-item [cartItems]="cartItems" (dataEvent)="handleDelete2($event)">
     </app-cart-item>
+
+    <!-- Shipping Checkout Form -->
+    <div class="checkout-box">
+      <h3>Thông tin nhận hàng</h3>
+      <div class="form-control">
+        <label>Địa chỉ nhận hàng *</label>
+        <input type="text" [(ngModel)]="shippingAddress" placeholder="Nhập số nhà, tên đường, quận/huyện, thành phố..." />
+      </div>
+      <button class="btn-checkout" (click)="handleCheckout()">
+        Xác nhận đặt hàng
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="cartItems.length === 0" class="empty-cart-state">
+    <p>Giỏ hàng của bạn đang trống.</p>
   </div>
 </div>

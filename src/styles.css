@@ -32,6 +32,7 @@ h1 {
     border-radius: 8px;
     text-align: center;
     transition: all .5s ease;
+    z-index: 1;
 }
 .btn-navigation:hover{
   background-color: rgb(65, 218, 65);;

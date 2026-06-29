@@ -5,37 +5,78 @@ import {
   BlogItem,
   CartItems,
   ProductItems,
+  User,
+  OrderDto
 } from 'src/app/shared/types/productItem';
 import { ResponseData } from 'src/app/shared/types/responseData';
 @Injectable({ providedIn: 'root' })
 export class BlogService {
+  private baseUrl = 'https://localhost:7216/api';
+
   constructor(private http: HttpClient) {}
-  // getBlogs():Observable<ResponseData<ProductItems[]>>{
-  //     return this.http.get<any>('https://localhost:7216/api/Product')
-  // }
 
   getBlogs(): Observable<ProductItems[]> {
-    return this.http.get<ProductItems[]>('https://localhost:7216/api/Product');
+    return this.http.get<ProductItems[]>(`${this.baseUrl}/Product`);
   }
 
   detailBlog(id: number): Observable<ResponseData<ProductItems>> {
-    return this.http.get<any>(`https://localhost:7216/api/Product/${id}`);
+    return this.http.get<any>(`${this.baseUrl}/Product/${id}`);
   }
-  postBlog(blogItem: BlogItem): Observable<ProductItems> {
-    return this.http.post<any>('https://localhost:7216/api/Product', blogItem);
+  postBlog(blogItem: any): Observable<ProductItems> {
+    return this.http.post<any>(`${this.baseUrl}/Product`, blogItem);
   }
   deleteBlog(id: number): Observable<ResponseData<ProductItems>> {
-    return this.http.delete<any>(`https://localhost:7216/api/Cart/${id}`);
+    return this.http.delete<any>(`${this.baseUrl}/Cart/${id}`);
   }
   getCartByCustomer(customerId: number): Observable<CartItems[]> {
     return this.http.get<CartItems[]>(
-      `https://localhost:7216/api/Cart/customer/${customerId}`,
+      `${this.baseUrl}/Cart/customer/${customerId}`,
     );
   }
   postCart(customerId: number, productId: number): Observable<any> {
     return this.http.post<any>(
-      `https://localhost:7216/api/Cart/add?customerId=${customerId}&productId=${productId}`,
+      `${this.baseUrl}/Cart/add?customerId=${customerId}&productId=${productId}`,
       {},
     );
+  }
+
+  register(user: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/User/register`, user);
+  }
+
+  login(credentials: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/User/login`, credentials);
+  }
+
+  placeOrder(userId: number, shippingAddress: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Order/place`, { userId, shippingAddress });
+  }
+
+  getOrdersByUserId(userId: number): Observable<OrderDto[]> {
+    return this.http.get<OrderDto[]>(`${this.baseUrl}/Order/${userId}`);
+  }
+
+  adminGetProducts(): Observable<ProductItems[]> {
+    return this.http.get<ProductItems[]>(`${this.baseUrl}/Admin/products`);
+  }
+
+  adminCreateProduct(product: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Admin/products`, product);
+  }
+
+  adminUpdateProduct(id: number, product: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/Admin/products/${id}`, product);
+  }
+
+  adminDeleteProduct(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/Admin/products/${id}`);
+  }
+
+  adminGetOrders(): Observable<OrderDto[]> {
+    return this.http.get<OrderDto[]>(`${this.baseUrl}/Admin/orders`);
+  }
+
+  adminUpdateOrderStatus(orderId: number, orderStatusId: number): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/Admin/orders/${orderId}/status`, { orderStatusId });
   }
 }

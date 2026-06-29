@@ -1,6 +1,6 @@
 <div class="group-header">
   <div class="header-logo">
-    <a [routerLink]="['']">
+    <a [routerLink]="['']" (click)="checkUserSession()">
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/LEGO_logo.svg/3840px-LEGO_logo.svg.png"
         alt="LEGO Logo"
@@ -9,19 +9,29 @@
   </div>
 
   <div class="menu">
-    <a routerLink="/">TRANG CHỦ</a>
-    <a routerLink="/lego1">LEGO1</a>
-    <a routerLink="/lego2">LEGO2</a>
-    <a routerLink="/lego3">LEGO3</a>
+    <a *ngIf = "user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">TRANG CHỦ</a>
+    <a *ngIf="user && user.role === 'Admin'" routerLink="/admin" (click)="checkUserSession()">ADMIN DASHBOARD</a>
+    <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO1</a>
+    <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO2</a>
+    <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO3</a>
+    <a *ngIf="user && user.role === 'User'" routerLink="/orders-history" (click)="checkUserSession()">ĐƠN HÀNG CỦA TÔI</a>
   </div>
 
   <div class="group-navigation">
-    <a [routerLink]="['cart', 1]" class="btn-navigation">
-      <img src="assets/images/shopping-cart.svg" alt="Shopping" />
-    </a>
+    <ng-container *ngIf="user; else guestNav">
+      <span class="user-welcome">Xin chào, {{ user.fullName }}</span>
+      
+      <a *ngIf="user.role === 'User'" routerLink="/cart" (click)="checkUserSession()" class="btn-navigation">
+        <img src="assets/images/shopping-cart.svg" alt="Shopping" />
+      </a>
 
-    <a routerLink="/create" class="btn-navigation">
-      <img src="assets/images/store.svg" alt="Store" />
-    </a>
+      <button (click)="handleLogout()" class="btn-logout">
+        Đăng xuất
+      </button>
+    </ng-container>
+
+    <ng-template #guestNav>
+      <a routerLink="/login" class="btn-login-header">Đăng nhập</a>
+    </ng-template>
   </div>
 </div>
