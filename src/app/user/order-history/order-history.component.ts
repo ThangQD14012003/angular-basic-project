@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService } from 'src/services/BlogService';
-import { OrderDto } from '../shared/types/productItem';
+import { OrderDto } from '../../shared/types/productItem';
 import { NgFor, NgIf, NgClass, DatePipe, CurrencyPipe } from '@angular/common';
-import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
+import { currencyPipe } from '../../shared/pipes/CurrencyPipe.pipe';
 
 @Component({
   selector: 'app-order-history',

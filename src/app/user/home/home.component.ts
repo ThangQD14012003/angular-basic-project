@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { ProductItems } from '../shared/types/productItem';
-import { CartItemComponent } from '../shared/cart-item/cartItem.component';
+import { ProductItems } from '../../shared/types/productItem';
+import { CartItemComponent } from '../../shared/cart-item/cartItem.component';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { BlogService } from 'src/services/BlogService';
 import { Subscription } from 'rxjs';
-import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
-import { upperCasePipe } from '../shared/pipes/UpperCasePipe.pipe';
-import { CartStateService } from '../shared/services/cart-state.service';
+import { currencyPipe } from '../../shared/pipes/CurrencyPipe.pipe';
+import { upperCasePipe } from '../../shared/pipes/UpperCasePipe.pipe';
+import { CartStateService } from '../../shared/services/cart-state.service';
 
 @Component({
   selector: 'app-home',
@@ -41,10 +41,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getBlogApi = this.blogService
       .getBlogs()
       .subscribe((res: ProductItems[]) => {
-        this.products = res.map(item => ({
-          ...item,
-          image: '../assets/images/lego1.jpg',
-        }));
+        this.products = res.map(item => {
+          // Dùng imageUrl từ server nếu là URL tuyệt đối, fallback về ảnh mặc định
+          const imageUrl = (item as any).imageUrl || item.image || '';
+          const image = imageUrl.startsWith('http')
+            ? imageUrl
+            : '../assets/images/lego1.jpg';
+          return { ...item, image };
+        });
 
         console.log(this.products);
       });

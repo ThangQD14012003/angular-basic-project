@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { ProductItems } from '../shared/types/productItem';
+import { ProductItems } from '../../shared/types/productItem';
 import { BlogService } from 'src/services/BlogService';
-import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
-import { CartStateService } from '../shared/services/cart-state.service';
+import { currencyPipe } from '../../shared/pipes/CurrencyPipe.pipe';
+import { CartStateService } from '../../shared/services/cart-state.service';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -53,8 +53,12 @@ export class DetailComponent implements OnInit {
     if (productId) {
       this.blogService.detailBlog(productId).subscribe((data: any) => {
         console.log('data11: ', data);
-        this.productItem = data;
-        this.productItem.image = '../assets/images/lego1.jpg';
+        // Dùng imageUrl từ server, fallback về ảnh mặc định nếu chưa có
+        const imageUrl = data.imageUrl || data.image || '';
+        this.productItem = {
+          ...data,
+          image: imageUrl.startsWith('http') ? imageUrl : '../assets/images/lego1.jpg'
+        };
       });
     }
 

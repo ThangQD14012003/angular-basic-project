@@ -16,80 +16,115 @@
 
     <!-- Tab 1: Products -->
     <div *ngIf="activeTab === 'products'" class="tab-pane">
-      <div class="product-split">
-        <!-- Form Add/Edit -->
-        <div class="product-form-box">
-          <h3>{{ isEditingProduct ? 'SỬA SẢN PHẨM' : 'THÊM SẢN PHẨM' }}</h3>
-          <form [formGroup]="productForm" (ngSubmit)="handleSaveProduct()">
-            <div class="form-control">
-              <label>Tên sản phẩm</label>
-              <input type="text" formControlName="name" placeholder="Tên LEGO..." />
-            </div>
+        <div class="product-split">
+          <!-- Form Add/Edit -->
+          <div class="product-form-box">
+            <h3>{{ isEditingProduct ? 'SỬA SẢN PHẨM' : 'THÊM SẢN PHẨM' }}</h3>
+            <form [formGroup]="productForm" (ngSubmit)="handleSaveProduct()">
+              <div class="form-control">
+                <label>Tên sản phẩm</label>
+                <input type="text" formControlName="name" placeholder="Tên LEGO..." />
+              </div>
 
-            <div class="form-control">
-              <label>Giá tiền (VND)</label>
-              <input type="number" formControlName="price" />
-            </div>
+              <div class="form-control">
+                <label>Giá tiền (VND)</label>
+                <input type="number" formControlName="price" />
+              </div>
 
-            <div class="form-control">
-              <label>Số lượng kho</label>
-              <input type="number" formControlName="stockQuantity" />
-            </div>
+              <div class="form-control">
+                <label>Số lượng kho</label>
+                <input type="number" formControlName="stockQuantity" />
+              </div>
 
-            <div class="form-control">
-              <label>Số lượng khả dụng</label>
-              <input type="number" formControlName="availableQuantity" />
-            </div>
+              <div class="form-control">
+                <label>Số lượng khả dụng</label>
+                <input type="number" formControlName="availableQuantity" />
+              </div>
 
-            <div class="form-control">
-              <label>Link ảnh sản phẩm</label>
-              <input type="text" formControlName="imageUrl" />
-            </div>
+              <div class="form-control">
+                <label>Ảnh sản phẩm</label>
+                <div class="image-upload-area">
+                  <!-- Preview -->
+                  <div class="image-preview-box">
+                    <img
+                      *ngIf=" "
+                      [src]="imagePreviewUrl"
+                      alt="Preview ảnh sản phẩm"
+                      class="image-preview"
+                    />
+                    <div *ngIf="!imagePreviewUrl" class="image-preview-placeholder">
+                      <span>📷</span>
+                      <small>Chưa có ảnh</small>
+                    </div>
+                  </div>
 
-            <div class="form-control">
-              <label>Mô tả ngắn</label>
-              <textarea formControlName="description" rows="3"></textarea>
-            </div>
+                  <!-- File input -->
+                  <label class="btn-upload-file" [class.uploading]="isUploadingImage">
+                    <span *ngIf="!isUploadingImage"> Chọn ảnh từ thiết bị</span>
+                    <span *ngIf="isUploadingImage" class="upload-spinner"> Đang upload...</span>
+                    <input
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.webp,.gif"
+                      (change)="onImageFileSelected($event)"
+                      [disabled]="isUploadingImage"
+                      style="display:none"
+                    />
+                  </label>
 
-            <div class="form-actions">
-              <button type="submit" class="btn-save">
-                {{ isEditingProduct ? 'Cập nhật' : 'Thêm mới' }}
-              </button>
-              <button type="button" class="btn-cancel" *ngIf="isEditingProduct" (click)="handleOpenAddProduct()">
-                Hủy sửa
-              </button>
-            </div>
-          </form>
+                  <!-- Error -->
+                  <div *ngIf="uploadImageError" class="upload-error">{{ uploadImageError }}</div>
+
+                  <!-- URL hiện tại (readonly) -->
+                  <div *ngIf="productForm.get('imageUrl')?.value" class="current-url-display">
+                    <small>URL: {{ productForm.get('imageUrl')?.value }}</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-control">
+                <label>Mô tả ngắn</label>
+                <textarea formControlName="description" rows="3"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn-save" [disabled]="isUploadingImage">
+                  {{ isEditingProduct ? 'Cập nhật' : 'Thêm mới' }}
+                </button>
+                <button type="button" class="btn-cancel" *ngIf="isEditingProduct" (click)="handleOpenAddProduct()">
+                  Hủy sửa
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Product Table -->
+          <div class="product-table-box">
+            <h3>DANH SÁCH SẢN PHẨM</h3>
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Ảnh</th>
+                  <th>Tên sản phẩm</th>
+                  <th>Giá bán</th>
+                  <th>Kho</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of products">
+                  <td><img [src]="getProductImageUrl(p.imageUrl || p.image)" width="50" height="50" style="object-fit:cover;border-radius:4px" /></td>
+                  <td><strong>{{ p.name }}</strong></td>
+                  <td>{{ p.price | currencyPipe }}</td>
+                  <td>{{ p.availableQuantity ?? 0 }} / {{ p.stockQuantity ?? 0 }}</td>
+                  <td>
+                    <button class="btn-table-edit" (click)="handleEditProduct(p)">Sửa</button>
+                    <button class="btn-table-delete" (click)="handleDeleteProduct(p.id)">Xóa</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-
-        <!-- Product Table -->
-        <div class="product-table-box">
-          <h3>DANH SÁCH SẢN PHẨM</h3>
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Ảnh</th>
-                <th>Tên sản phẩm</th>
-                <th>Giá bán</th>
-                <th>Kho</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let p of products">
-                <td><img [src]="p.image" width="50" height="auto" /></td>
-                <td><strong>{{ p.name }}</strong></td>
-                <td>{{ p.price | currencyPipe }}</td>
-                <td>{{ p.availableQuantity ?? 0 }} / {{ p.stockQuantity ?? 0 }}</td>
-                <td>
-                  <button class="btn-table-edit" (click)="handleEditProduct(p)">Sửa</button>
-                  <button class="btn-table-delete" (click)="handleDeleteProduct(p.id)">Xóa</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
 
     <!-- Tab 2: Orders -->

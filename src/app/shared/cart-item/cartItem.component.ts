@@ -32,11 +32,11 @@ export class CartItemComponent implements OnDestroy {
     this.dataEvent.emit(id);
   };
 
-  get totalPrice(): string {
+  get totalPrice(): number {
     const sum = this.cartItems.reduce((total, item) => {
       return total + item.price;
     }, 0);
-    return `Total Price ${sum} đ`; 
+    return sum;
   }
   // luôn đồng bộ với products 
   ngOnDestroy(): void {

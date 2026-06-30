@@ -15,7 +15,7 @@ import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
 export class AdminDashboardComponent implements OnInit {
   activeTab: 'products' | 'orders' | 'settings' = 'products';
 
-  // Settings state
+  // EMAIL
   settingsForm = new FormGroup({
     managerEmail: new FormControl('', [Validators.required, Validators.email]),
     accountantEmail: new FormControl('', [Validators.required, Validators.email])
@@ -24,10 +24,13 @@ export class AdminDashboardComponent implements OnInit {
   settingsMessage: string = '';
   settingsError: string = '';
 
-  // Products state
+  // Products 
   products: ProductItems[] = [];
   isEditingProduct: boolean = false;
   editingProductId: number | null = null;
+  imagePreviewUrl: string = '';
+  isUploadingImage: boolean = false;
+  uploadImageError: string = '';
   productForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     price: new FormControl(0, [Validators.required, Validators.min(0)]),
@@ -66,7 +69,7 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
-  // --- PRODUCT MANAGEMENT ---
+  // --- QUẢN LÝ SẢN PHẨM ---
   loadProducts() {
     this.blogService.adminGetProducts().subscribe({
       next: (res) => {
@@ -79,27 +82,67 @@ export class AdminDashboardComponent implements OnInit {
   handleOpenAddProduct() {
     this.isEditingProduct = false;
     this.editingProductId = null;
+    this.imagePreviewUrl = '';
+    this.uploadImageError = '';
     this.productForm.reset({
       name: '',
       price: 0,
       description: '',
       stockQuantity: 100,
       availableQuantity: 100,
-      imageUrl: '../assets/images/lego1.jpg'
+      imageUrl: ''
     });
   }
 
   handleEditProduct(product: ProductItems) {
+    const imageUrl = product.imageUrl || product.image || '';
     this.isEditingProduct = true;
     this.editingProductId = product.id;
+    this.imagePreviewUrl = imageUrl;
+    this.uploadImageError = '';
     this.productForm.setValue({
       name: product.name,
       price: product.price,
       description: product.description || '',
       stockQuantity: product.stockQuantity ?? 100,
       availableQuantity: product.availableQuantity ?? 100,
-      imageUrl: product.image || '../assets/images/lego1.jpg'
+      imageUrl
     });
+  }
+
+  onImageFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+    const file = input.files[0];
+
+    // Preview local ngay lập tức
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreviewUrl = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+
+    // Upload lên server
+    this.isUploadingImage = true;
+    this.uploadImageError = '';
+    this.blogService.uploadProductImage(file).subscribe({
+      next: (res) => {
+        this.isUploadingImage = false;
+        this.productForm.patchValue({ imageUrl: res.imageUrl });
+      },
+      error: (err) => {
+        this.isUploadingImage = false;
+        this.uploadImageError = 'Upload thất bại. Vui lòng thử lại.';
+        console.error('Upload image failed', err);
+      }
+    });
+  }
+
+  getProductImageUrl(url: string | undefined): string {
+    
+    if (!url) return '../assets/images/lego1.jpg';
+    if (url.startsWith('http')) return url;
+    return '../assets/images/lego1.jpg';
   }
 
   handleSaveProduct() {
@@ -114,8 +157,8 @@ export class AdminDashboardComponent implements OnInit {
       description: this.productForm.get('description')?.value || '',
       stockQuantity: Number(this.productForm.get('stockQuantity')?.value || 100),
       availableQuantity: Number(this.productForm.get('availableQuantity')?.value || 100),
-      imageUrl: this.productForm.get('imageUrl')?.value || '../assets/images/lego1.jpg',
-      categoryId: 1 // Default Category
+      imageUrl: this.productForm.get('imageUrl')?.value || '',
+      categoryId: 1 
     };
 
     if (this.isEditingProduct && this.editingProductId) {
@@ -220,7 +263,7 @@ export class AdminDashboardComponent implements OnInit {
     };
   }
 
-  // --- SETTINGS MANAGEMENT ---
+  // SETTING EMAIL
   loadSettings() {
     this.blogService.adminGetSettings().subscribe({
       next: (res) => {

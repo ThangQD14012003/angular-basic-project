@@ -2,7 +2,8 @@ export type ProductItems = {
     id: number; 
     name: string; 
     price: number; 
-    image: string; 
+    image?: string;
+    imageUrl?: string;
     description: string;
     categoryId?: number;
     stockQuantity?: number;
@@ -54,4 +55,4 @@ export interface OrderDto {
     totalAmount: number;
     shippingAddress: string;
     orderDetails: OrderDetailDto[];
-}
+}

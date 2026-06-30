@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CartComponent } from './cart/cart.component';
-import { DetailComponent } from './detail/detail.component';
-import { CreateComponent } from './create/create.component';
-import { HomeComponent } from './home/home.component';
+import { CartComponent } from './user/cart/cart.component';
+import { DetailComponent } from './user/detail/detail.component';
+import { CreateComponent } from './user/create/create.component';
+import { HomeComponent } from './user/home/home.component';
 import { authGuard } from './auth/auth.guard';
 
 const routes: Routes = [
@@ -31,23 +31,23 @@ const routes: Routes = [
     path: 'orders-history',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./order-history/order-history.component').then((m) => m.OrderHistoryComponent),
+      import('./user/order-history/order-history.component').then((m) => m.OrderHistoryComponent),
   },
   {
     path: 'cart',
     canActivate: [authGuard],
     loadComponent: () => 
-      import('./cart/cart.component').then((m) => m.CartComponent),
+      import('./user/cart/cart.component').then((m) => m.CartComponent),
   },
   {
     path: 'detail/:idd', //idd ứng với idd ở detail lúc lấy ở trên param
     loadComponent: () =>
-      import('./detail/detail.component').then((m) => m.DetailComponent),
+      import('./user/detail/detail.component').then((m) => m.DetailComponent),
   },
   {
     path: 'create',
     loadComponent: () =>
-      import('./create/create.component').then((m) => m.CreateComponent),
+      import('./user/create/create.component').then((m) => m.CreateComponent),
   },
 ];
 

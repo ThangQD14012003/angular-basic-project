@@ -1,12 +1,12 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { CartItems } from '../shared/types/productItem';
-import { CartItemComponent } from '../shared/cart-item/cartItem.component';
+import { CartItems } from '../../shared/types/productItem';
+import { CartItemComponent } from '../../shared/cart-item/cartItem.component';
 import { NgClass, NgIf, NgFor } from '@angular/common';
 import { BlogService } from 'src/services/BlogService';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
-import { CartStateService } from '../shared/services/cart-state.service';
+import { CartStateService } from '../../shared/services/cart-state.service';
 
 @Component({
   selector: 'app-cart',

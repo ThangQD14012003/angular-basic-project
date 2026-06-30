@@ -34,7 +34,7 @@
       <!-- PASSWORD -->
       <div class="form-control">
         <label>Mật khẩu</label>
-        <input type="password" formControlName="password" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)" />
+        <input autocomplete="new-password" type="password" formControlName="password" placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)" />
         <div *ngIf="password?.touched && password?.invalid">
           <small class="error" *ngIf="password?.hasError('required')">Mật khẩu là bắt buộc</small>
           <small class="error" *ngIf="password?.hasError('minlength')">Mật khẩu phải từ 6 ký tự trở lên</small>
@@ -45,6 +45,9 @@
       <div class="form-control">
         <label>Số điện thoại</label>
         <input type="text" formControlName="phone" placeholder="Nhập số điện thoại" />
+        <div *ngIf="phone?.touched && phone?.invalid">
+          <small class="error" *ngIf="phone?.hasError('required')">Số điện thoại là bắt buộc</small>
+        </div>
       </div>
 
       <!-- ADDRESS -->

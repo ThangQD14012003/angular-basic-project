@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, RequiredValidator, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { BlogService } from 'src/services/BlogService';
-import { BlogItem } from '../shared/types/productItem';
+import { BlogItem } from '../../shared/types/productItem';
 
 @Component({
   selector: 'app-create',

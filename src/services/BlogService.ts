@@ -91,4 +91,10 @@ export class BlogService {
   adminUpdateSettings(settings: any): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/Admin/settings`, settings);
   }
+
+  uploadProductImage(file: File): Observable<{ imageUrl: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<{ imageUrl: string }>(`${this.baseUrl}/Upload/image`, formData);
+  }
 }
