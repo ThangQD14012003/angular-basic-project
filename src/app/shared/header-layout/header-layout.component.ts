@@ -3,6 +3,7 @@ import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { NgIf } from '@angular/common';
 import { Subscription, filter } from 'rxjs';
 import { CartStateService } from '../services/cart-state.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'header-layout',
@@ -19,7 +20,8 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private cartStateService: CartStateService
+    private cartStateService: CartStateService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -28,8 +30,9 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
     );
     this.checkUserSession();
     this.routerSubscription = this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
+      .pipe(filter((event) => event instanceof NavigationEnd)) // khi chuyển trang thì sẽ check lại session của user
       .subscribe(() => this.checkUserSession());
+    // Mỗi lần user chuyển sang một page mới → kiểm tra lại session đăng nhập => có thể bỏ đi nếu làm app đơn giản 
   }
 
   ngOnDestroy(): void {
@@ -53,7 +56,7 @@ export class HeaderLayoutComponent implements OnInit, OnDestroy {
   }
 
   handleLogout() {
-    localStorage.removeItem('user');
+    this.authService.logout();
     this.user = null;
     this.router.navigate(['/login']);
   }

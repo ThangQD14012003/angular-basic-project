@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { BlogService } from 'src/services/BlogService';
 import { NgIf } from '@angular/common';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent {
 
   errorMessage: string = '';
 
-  constructor(private blogService: BlogService, private router: Router) {}
+  constructor(private blogService: BlogService, private router: Router, private authService: AuthService) {}
 
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
@@ -28,7 +29,7 @@ export class LoginComponent {
 
   handleLogin() {
     if (this.loginForm.invalid) {
-      this.loginForm.markAllAsTouched();
+      this.loginForm.markAllAsTouched(); // đánh dấu tất cả các trường là đã chạm để hiển thị thông báo lỗi
       return;
     }
 
@@ -51,7 +52,7 @@ export class LoginComponent {
           return;
         }
 
-        localStorage.setItem('user', JSON.stringify(loggedUser));
+        this.authService.setSession(loggedUser, res.token);
 
         if (loggedUser.role === 'Admin') {
           this.router.navigate(['/admin']);

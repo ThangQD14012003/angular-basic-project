@@ -13,7 +13,16 @@ import { currencyPipe } from '../shared/pipes/CurrencyPipe.pipe';
   styleUrls: ['./admin-dashboard.component.css']
 })
 export class AdminDashboardComponent implements OnInit {
-  activeTab: 'products' | 'orders' = 'products';
+  activeTab: 'products' | 'orders' | 'settings' = 'products';
+
+  // Settings state
+  settingsForm = new FormGroup({
+    managerEmail: new FormControl('', [Validators.required, Validators.email]),
+    accountantEmail: new FormControl('', [Validators.required, Validators.email])
+  });
+  isSavingSettings: boolean = false;
+  settingsMessage: string = '';
+  settingsError: string = '';
 
   // Products state
   products: ProductItems[] = [];
@@ -45,9 +54,21 @@ export class AdminDashboardComponent implements OnInit {
     this.loadOrders();
   }
 
+  setActiveTab(tab: 'products' | 'orders' | 'settings') {
+    this.activeTab = tab;
+
+    if (tab === 'products') {
+      this.loadProducts();
+    } else if (tab === 'orders') {
+      this.loadOrders();
+    } else {
+      this.loadSettings();
+    }
+  }
+
   // --- PRODUCT MANAGEMENT ---
   loadProducts() {
-    this.blogService.getBlogs().subscribe({
+    this.blogService.adminGetProducts().subscribe({
       next: (res) => {
         this.products = res;
       },
@@ -136,6 +157,10 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   handleStatusChange(order: OrderDto, statusId: number) {
+    if (this.isFinalOrder(order)) {
+      return;
+    }
+
     const previousStatusId = order.orderStatusId;
     const previousStatusName = order.orderStatusName;
     const selectedStatus = this.orderStatuses.find((status) => status.id === statusId);
@@ -144,12 +169,21 @@ export class AdminDashboardComponent implements OnInit {
     order.orderStatusName = selectedStatus?.name || previousStatusName;
 
     this.blogService.adminUpdateOrderStatus(order.id, statusId).subscribe({
+      next: () => {
+        if (statusId === 4 || statusId === 5) {
+          this.loadProducts();
+        }
+      },
       error: (err) => {
         order.orderStatusId = previousStatusId;
         order.orderStatusName = previousStatusName;
         console.error('Failed to update status', err);
       }
     });
+  }
+
+  isFinalOrder(order: OrderDto): boolean {
+    return order.orderStatusId === 4 || order.orderStatusId === 5;
   }
 
   private normalizeOrder(order: OrderDto): OrderDto {
@@ -184,5 +218,47 @@ export class AdminDashboardComponent implements OnInit {
         ?? this.orderStatuses.find((status) => status.id === statusId)?.name
         ?? String(statusName)
     };
+  }
+
+  // --- SETTINGS MANAGEMENT ---
+  loadSettings() {
+    this.blogService.adminGetSettings().subscribe({
+      next: (res) => {
+        this.settingsForm.setValue({
+          managerEmail: res.managerEmail,
+          accountantEmail: res.accountantEmail
+        });
+      },
+      error: (err) => console.error('Failed to load settings', err)
+    });
+  }
+
+  handleSaveSettings() {
+    if (this.settingsForm.invalid) {
+      this.settingsForm.markAllAsTouched();
+      return;
+    }
+
+    this.isSavingSettings = true;
+    this.settingsMessage = '';
+    this.settingsError = '';
+
+    const payload = {
+      managerEmail: this.settingsForm.get('managerEmail')?.value || '',
+      accountantEmail: this.settingsForm.get('accountantEmail')?.value || ''
+    };
+
+    this.blogService.adminUpdateSettings(payload).subscribe({
+      next: () => {
+        this.isSavingSettings = false;
+        this.settingsMessage = 'Cập nhật cấu hình email thành công!';
+        setTimeout(() => this.settingsMessage = '', 3000);
+      },
+      error: (err) => {
+        this.isSavingSettings = false;
+        this.settingsError = 'Cập nhật thất bại. Vui lòng kiểm tra lại.';
+        console.error('Failed to save settings', err);
+      }
+    });
   }
 }

@@ -52,6 +52,10 @@ export class BlogService {
     return this.http.post<any>(`${this.baseUrl}/Order/place`, { userId, shippingAddress });
   }
 
+  buyNow(userId: number, productId: number, quantity: number, shippingAddress: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/Order/buy-now`, { userId, productId, quantity, shippingAddress });
+  }
+
   getOrdersByUserId(userId: number): Observable<OrderDto[]> {
     return this.http.get<OrderDto[]>(`${this.baseUrl}/Order/${userId}`);
   }
@@ -78,5 +82,13 @@ export class BlogService {
 
   adminUpdateOrderStatus(orderId: number, orderStatusId: number): Observable<any> {
     return this.http.put<any>(`${this.baseUrl}/Admin/orders/${orderId}/status`, { orderStatusId });
+  }
+
+  adminGetSettings(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/Admin/settings`);
+  }
+
+  adminUpdateSettings(settings: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/Admin/settings`, settings);
   }
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderLayoutComponent } from './shared/header-layout/header-layout.component';
@@ -9,24 +9,30 @@ import { currencyPipe } from './shared/pipes/CurrencyPipe.pipe';
 import { NgClass, NgFor, UpperCasePipe } from '@angular/common';
 import { upperCasePipe } from './shared/pipes/UpperCasePipe.pipe';
 import { FooterLayoutComponent } from './shared/footer-layout/footer-layout.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule, 
-    HeaderLayoutComponent, 
+    AppRoutingModule,
+    HeaderLayoutComponent,
     FooterLayoutComponent,
-    FormsModule, 
-    currencyPipe, 
-    upperCasePipe, 
-    NgFor, 
-    NgClass, 
-    HttpClientModule
+    FormsModule,
+    currencyPipe,
+    upperCasePipe,
+    NgFor,
+    NgClass,
+    HttpClientModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

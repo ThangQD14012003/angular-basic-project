@@ -1,11 +1,14 @@
 <div class="admin-container">
   <!-- Sider Tabs -->
   <div class="admin-tabs">
-    <button [class.active]="activeTab === 'products'" (click)="activeTab = 'products'">
+    <button [class.active]="activeTab === 'products'" (click)="setActiveTab('products')">
       Quản lý sản phẩm
     </button>
-    <button [class.active]="activeTab === 'orders'" (click)="activeTab = 'orders'">
+    <button [class.active]="activeTab === 'orders'" (click)="setActiveTab('orders')">
       Quản lý đơn hàng
+    </button>
+    <button [class.active]="activeTab === 'settings'" (click)="setActiveTab('settings')">
+      Cài đặt Email
     </button>
   </div>
 
@@ -120,13 +123,57 @@
               </div>
             </td>
             <td>
-              <select [ngModel]="o.orderStatusId" (ngModelChange)="handleStatusChange(o, $event)" class="status-select">
+              <select
+                [ngModel]="o.orderStatusId"
+                (ngModelChange)="handleStatusChange(o, $event)"
+                [disabled]="isFinalOrder(o)"
+                class="status-select"
+              >
                 <option *ngFor="let s of orderStatuses" [ngValue]="s.id">{{ s.name }}</option>
               </select>
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Tab 3: Settings -->
+    <div *ngIf="activeTab === 'settings'" class="tab-pane">
+      <div class="settings-box">
+        <h3>CẤU HÌNH EMAIL THÔNG BÁO</h3>
+        <p class="settings-desc">Cài đặt địa chỉ email nhận thông báo tự động cho Quản lý và Kế toán khi có khách hàng đặt đơn thành công.</p>
+        
+        <form [formGroup]="settingsForm" (ngSubmit)="handleSaveSettings()">
+          <div class="form-control">
+            <label>Email Quản lý (Manager Email)</label>
+            <input type="email" formControlName="managerEmail" placeholder="manager@example.com" />
+            <div *ngIf="settingsForm.get('managerEmail')?.touched && settingsForm.get('managerEmail')?.invalid" class="error-msg">
+              Vui lòng nhập địa chỉ email quản lý hợp lệ.
+            </div>
+          </div>
+
+          <div class="form-control">
+            <label>Email Kế toán (Accountant Email)</label>
+            <input type="email" formControlName="accountantEmail" placeholder="accountant@example.com" />
+            <div *ngIf="settingsForm.get('accountantEmail')?.touched && settingsForm.get('accountantEmail')?.invalid" class="error-msg">
+              Vui lòng nhập địa chỉ email kế toán hợp lệ.
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save" [disabled]="isSavingSettings">
+              {{ isSavingSettings ? 'Đang lưu...' : 'Lưu cấu hình' }}
+            </button>
+          </div>
+
+          <div *ngIf="settingsMessage" class="success-alert">
+            {{ settingsMessage }}
+          </div>
+          <div *ngIf="settingsError" class="error-alert">
+            {{ settingsError }}
+          </div>
+        </form>
+      </div>
     </div>
 
   </div>

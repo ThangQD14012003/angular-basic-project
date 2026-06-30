@@ -22,16 +22,69 @@
       </div>
 
       <div class="action-buttons">
-        <button class="btn-cart">
+        <button class="btn-cart" (click)="handleAddToCart(productItem)">
           <i class="fa-solid fa-cart-plus"></i>
           Thêm vào giỏ hàng
         </button>
 
-        <button class="btn-buy">
+        <button class="btn-buy" (click)="openBuyNowModal()">
           Mua ngay
         </button>
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- Modal Mua Ngay -->
+<div class="modal-overlay" *ngIf="showBuyNowModal" (click)="closeBuyNowModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeBuyNowModal()">✕</button>
+    <h2 class="modal-title">
+      <i class="fa-solid fa-bolt"></i> Mua Ngay
+    </h2>
+
+    <div class="modal-product-info">
+      <img [src]="productItem.image" [alt]="productItem.name" />
+      <div>
+        <p class="modal-product-name">{{ productItem.name }}</p>
+        <p class="modal-product-price">{{ productItem.price | currencyPipe }}</p>
+      </div>
+    </div>
+
+    <div class="modal-form">
+      <label for="buy-now-qty">Số lượng</label>
+      <input
+        id="buy-now-qty"
+        type="number"
+        [(ngModel)]="buyNowQuantity"
+        min="1"
+        placeholder="Nhập số lượng"
+      />
+
+      <label for="buy-now-address">Địa chỉ nhận hàng</label>
+      <textarea
+        id="buy-now-address"
+        [(ngModel)]="buyNowAddress"
+        placeholder="Nhập địa chỉ nhận hàng của bạn..."
+        rows="3"
+      ></textarea>
+    </div>
+
+    <div class="modal-error" *ngIf="buyNowError">
+      <i class="fa-solid fa-circle-exclamation"></i> {{ buyNowError }}
+    </div>
+
+    <div class="modal-success" *ngIf="buyNowSuccess">
+      <i class="fa-solid fa-circle-check"></i> {{ buyNowSuccess }}
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeBuyNowModal()" [disabled]="isBuyingNow">Hủy</button>
+      <button class="btn-confirm" (click)="confirmBuyNow()" [disabled]="isBuyingNow">
+        <span *ngIf="!isBuyingNow"><i class="fa-solid fa-bolt"></i> Xác nhận mua</span>
+        <span *ngIf="isBuyingNow"><i class="fa-solid fa-spinner fa-spin"></i> Đang xử lý...</span>
+      </button>
+    </div>
   </div>
 </div>

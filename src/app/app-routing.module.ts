@@ -4,6 +4,7 @@ import { CartComponent } from './cart/cart.component';
 import { DetailComponent } from './detail/detail.component';
 import { CreateComponent } from './create/create.component';
 import { HomeComponent } from './home/home.component';
+import { authGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -22,17 +23,21 @@ const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./admin/admin-dashboard.component').then((m) => m.AdminDashboardComponent),
   },
   {
     path: 'orders-history',
+    canActivate: [authGuard],
     loadComponent: () =>
       import('./order-history/order-history.component').then((m) => m.OrderHistoryComponent),
   },
   {
     path: 'cart',
-    component: CartComponent,
+    canActivate: [authGuard],
+    loadComponent: () => 
+      import('./cart/cart.component').then((m) => m.CartComponent),
   },
   {
     path: 'detail/:idd', //idd ứng với idd ở detail lúc lấy ở trên param

@@ -109,5 +109,6 @@ export class CartComponent implements OnInit, OnDestroy {
   private updateCartItemCount(): void {
     const totalQuantity = this.cartItems.reduce((total, item) => total + item.quantity, 0);
     this.cartStateService.setCartItemCount(totalQuantity);
+    console.log('Updated cart item count:', totalQuantity);
   }
 }

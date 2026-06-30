@@ -59,13 +59,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   handleAddToCart(product: ProductItems) {
     const userStr = localStorage.getItem('user');
-    console.log('User from localStorage:', userStr); // Log the retrieved user string 
+    console.log('User from localStorage:', userStr); 
     if (!userStr) {
       this.router.navigate(['/login']);
       return;
     }
 
-    const customerId = JSON.parse(userStr).id;
+    const customerId = JSON.parse(userStr).id; // localStorage luôn lưu trữ dưới dạng string nên cần parse; 
+    console.log('Customer ID:', customerId);
     this.blogService.postCart(customerId, product.id)
       .subscribe({
         next: (res) => {

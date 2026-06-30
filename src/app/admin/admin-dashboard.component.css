@@ -189,3 +189,56 @@ h3 {
 .status-select:focus {
   border-color: #f1c40f;
 }
+
+.status-select:disabled {
+  background: #f1f2f6;
+  color: #7f8c8d;
+  cursor: not-allowed;
+}
+
+/* Settings tab styles */
+.settings-box {
+  max-width: 500px;
+  background: #fff;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.settings-desc {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.error-msg {
+  color: #e74c3c;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.success-alert {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.error-alert {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+}

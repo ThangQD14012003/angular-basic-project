@@ -9,11 +9,16 @@
   </div>
 
   <div class="menu">
-    <a *ngIf = "user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">TRANG CHỦ</a>
+    <a *ngIf = "(user && user.role === 'User') || user === null" routerLink="/" >TRANG CHỦ</a>
     <a *ngIf="user && user.role === 'Admin'" routerLink="/admin" (click)="checkUserSession()">ADMIN DASHBOARD</a>
-    <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO1</a>
+    <!-- <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO1</a>
     <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO2</a>
-    <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO3</a>
+    <a *ngIf="user && user.role === 'User'" routerLink="/" (click)="checkUserSession()">LOGO3</a> -->
+
+    <a *ngIf = "(user && user.role === 'User') || user === null" routerLink="/" >LOGO1</a>
+    <a *ngIf = "(user && user.role === 'User') || user === null" routerLink="/" >LOGO2</a>
+    <a *ngIf = "(user && user.role === 'User') || user === null" routerLink="/" >LOGO3</a>
+
     <a *ngIf="user && user.role === 'User'" routerLink="/orders-history" (click)="checkUserSession()">ĐƠN HÀNG CỦA TÔI</a>
   </div>
 
@@ -23,6 +28,7 @@
       
       <a *ngIf="user.role === 'User'" routerLink="/cart" (click)="checkUserSession()" class="btn-navigation">
         <img src="assets/images/shopping-cart.svg" alt="Shopping" />
+        <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
       </a>
 
       <button (click)="handleLogout()" class="btn-logout">
