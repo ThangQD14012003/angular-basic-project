@@ -20,7 +20,8 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
-            "assets": ["src/assets"
+            "assets": [
+              "src/assets"
             ],
             "styles": [
               "src/styles.css"
@@ -31,8 +32,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/enviroments/environment.ts",
-                  "with": "src/enviroments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "budgets": [
