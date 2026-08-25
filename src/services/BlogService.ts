@@ -9,9 +9,11 @@ import {
   OrderDto
 } from 'src/app/shared/types/productItem';
 import { ResponseData } from 'src/app/shared/types/responseData';
+import { environment } from 'src/enviroments/environment';
+
 @Injectable({ providedIn: 'root' })
 export class BlogService {
-  private baseUrl = 'https://localhost:7216/api';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
