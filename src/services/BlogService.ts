@@ -9,7 +9,7 @@ import {
   OrderDto
 } from 'src/app/shared/types/productItem';
 import { ResponseData } from 'src/app/shared/types/responseData';
-import { environment } from 'src/enviroments/environment';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class BlogService {
